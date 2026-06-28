@@ -95,7 +95,7 @@
     function runCode() {
       const input = document.getElementById('code-input').value;
       const consoleOutput = document.getElementById('console-output');
-      let dangerousKey = ["while", "for"];
+      let dangerousKeywords = ["while", "for"];
       
       consoleOutput.innerText = "";
       
@@ -116,13 +116,25 @@
           return;
         }
 
+        // 1. Check for loops before running the code
+        const containsLoops = dangerousKeywords.some(keyword => input.includes(keyword));
+
+        if (containsLoops) {
+          // 2. Ask user for permission
+          let proceed = confirm("Console Input Includes Loops. This may crash your browser. Proceed?");
+          
+          // 3. If they cancel, stop the execution immediately
+          if (!proceed) {
+            consoleOutput.innerText = "Execution canceled by user safety check.";
+            return; 
+          }
+        }
+
+        // 4. Safe to execute now
         eval(input);
         
         if (consoleOutput.innerText === "") {
           consoleOutput.innerText = "(Code executed Successful. Console - Empty)";
-        }
-        if (input.includes(dangerousKey)) {
-          let userChoice = confirm("Console Input Includes Loops. This may crash your browser. Proceed? ");
         }
         
       } catch (error) {

@@ -95,6 +95,7 @@
     function runCode() {
       const input = document.getElementById('code-input').value;
       const consoleOutput = document.getElementById('console-output');
+      let dangerousKey = ["while", "for"];
       
       consoleOutput.innerText = "";
       
@@ -119,6 +120,9 @@
         
         if (consoleOutput.innerText === "") {
           consoleOutput.innerText = "(Code executed Successful. Console - Empty)";
+        }
+        if (input.includes(dangerousKey)) {
+          let userChoice = confirm("Console Input Includes Loops. This may crash your browser. Proceed? ");
         }
         
       } catch (error) {
